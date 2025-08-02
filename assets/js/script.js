@@ -147,19 +147,19 @@ Mohon konfirmasi jika sudah melakukan pembayaran.
         newRow.innerHTML = `
             <div class="flex flex-col">
                 <label>Nama Barang</label>
-                <input class="border p-2 item-name" type="text" placeholder="Timing Belt" required autocomplete="off">
+                <input class="border p-2 neo-shadow-sm item-name" type="text" placeholder="Timing Belt" required autocomplete="off">
             </div>
             <div class="flex flex-col">
                 <label>Qty Barang</label>
-                <input class="border p-2 item-qty" type="number" placeholder="qty" value="1" required autocomplete="off">
+                <input class="border p-2 neo-shadow-sm item-qty" type="number" placeholder="qty" value="1" required autocomplete="off">
             </div>
             <div class="flex flex-col">
                 <label>Harga</label>
-                <input class="border p-2 item-price" type="text" placeholder="1.000" value="1" required autocomplete="off">
+                <input class="border p-2 neo-shadow-sm item-price" type="text" placeholder="1.000" value="1" required autocomplete="off">
             </div>
             <div class="flex flex-col">
                 <label class="invisible">Action</label>
-                <button class="remove-item py-2 bg-red-500 px-5 rounded-xl text-white h-10">
+                <button class="remove-item py-2 bg-red-500 px-5 border border-black neo-shadow-sm text-white h-10">
                     <div class="flex text-center items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                     </div>
@@ -349,17 +349,14 @@ Mohon konfirmasi jika sudah melakukan pembayaran.
             input.addEventListener('blur', () => {
                 if (!input.value.trim()) {
                     input.classList.add('border-red-500');
-                    input.classList.remove('border-gray-300');
                 } else {
                     input.classList.remove('border-red-500');
-                    input.classList.add('border-gray-300');
                 }
             });
             
             input.addEventListener('input', () => {
                 if (input.value.trim()) {
                     input.classList.remove('border-red-500');
-                    input.classList.add('border-gray-300');
                 }
             });
         });
