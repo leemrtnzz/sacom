@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sacom</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body>
+    <section class="flex flex-col items-center justify-center mx-auto border min-h-screen pb-16">
+        <h1 class="font-bold text-3xl mb-10">FORM PENAWARAN</h1>
+        <div class="flex flex-col border p-4 mb-5 w-3xs lg:w-[700px]">
+            <h1 class="font-bold text-2xl mb-5">Data Pelanggan</h1>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
+            <div>
+               <div class="flex flex-col">
+                 <label for="customer_name">Nama Pelanggan<span class="text-red-500">*</span></label>
+                <input class="border p-2" type="text" placeholder="Budi" id="customer_name" required autocomplete="off"> 
+               </div>   
+            </div>
+            <div >
+                <div class="flex flex-col">
+                 <label for="customer_company">Perusahaan</label>
+                <input class="border p-2" type="text" placeholder="PT. Mugiwara" id="customer_company" required autocomplete="off"> 
+               </div>      
+            </div>
+            <div>
+                <div class="flex flex-col">
+                 <label for="customer_phone">Nomor Handphone <span class="text-red-500">*</span></label>
+                <input class="border p-2" type="text" placeholder="08312344586" id="customer_phone" required autocomplete="off"> 
+               </div>  
+            </div>
+        </div>
+        </div>
+
+        <div class="flex flex-col border p-4 w-3xs lg:w-[700px] mb-5">
+            <h1 class="font-bold text-2xl mb-5">Data Perangkat</h1>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+                <div class="flex flex-col">
+                    <label for="brand">Merk <span class="text-red-500">*</span></label>
+                    <input class="border p-2" type="text" placeholder="Epson" id="brand" required autocomplete="off">
+                </div>
+            </div>
+            <div>
+                <div class="flex flex-col">
+                    <label for="type_brand">Type <span class="text-red-500">*</span></label>
+                    <input class="border p-2" type="text" placeholder="L3210" id="type_brand" required autocomplete="off">
+                </div>
+            </div>
+            <div>
+                <div class="flex flex-col">
+                    <label for="serial_number">Serial Number (SN) <span class="text-red-500">*</span></label>
+                    <input class="border p-2" type="text" placeholder="SN1234567890" id="serial_number" required autocomplete="off">
+                </div>
+            </div>
+            <div class="w-full">
+                <label for="problem">Masalah <span class="text-red-500">*</span></label>
+                <textarea name="problem" id="problem" cols="30" rows="10" class="border p-2 w-full lg:w-[600px] h-32"></textarea>
+            </div>
+        </div>
+        </div>
+
+        <div class="flex flex-col border p-4 w-3xs lg:w-[700px] mb-5">
+            <h1 class="font-bold text-2xl mb-5">Pergantian perangkat</h1>
+            <div id="items-container">
+                <div class="item-row grid grid-cols-1 md:grid-cols-4 gap-2 mb-2">
+                    <div class="flex flex-col">
+                        <label>Nama Barang</label>
+                        <input class="border p-2 item-name" type="text" placeholder="Timing Belt" required autocomplete="off">
+                    </div>
+                    <div class="flex flex-col">
+                        <label>Qty Barang</label>
+                        <input class="border p-2 item-qty" type="number" placeholder="qty" value="1" required autocomplete="off">
+                    </div>
+                    <div class="flex flex-col">
+                        <label>Harga</label>
+                        <input class="border p-2 item-price" type="number" placeholder="price" value="1" required autocomplete="off">
+                    </div>
+                    <div class="flex flex-col">
+                        <label class="invisible">Action</label>
+                        <button class="remove-item py-2 bg-red-500 px-5 rounded-xl text-white h-10">
+                            <div class="flex text-center items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="">
+                <button id="add_item" class="mt-8 py-2 bg-blue-500 px-5 rounded-xl text-white"><svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus-icon lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button>
+            </div>
+        </div>
+
+        <div class="flex flex-col border p-4 w-3xs lg:w-[700px] mb-5">
+            <h1 class="font-bold text-2xl mb-5">Preview Pesan</h1>
+            <div class="w-full">
+                <label for="text_message">Text Message</label>
+                <textarea id="text_message" cols="30" rows="15" class="border p-2 w-full h-64" readonly></textarea>
+            </div>
+            <div class="mt-4">
+                <button id="whatsapp_btn" class="py-2 bg-green-500 px-5 rounded-xl text-white font-bold">
+                    📱 Kirim ke WhatsApp
+                </button>
+            </div>
+        </div>
+        </div>
+    </section>
+</body>
+<script src="assets/js/script.js"></script>
+</html>
