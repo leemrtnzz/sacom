@@ -43,6 +43,7 @@ let itemCount = 1;
     }
 
     // Function to calculate total
+    // Function to calculate total
     const calculateTotal = () => {
         let total = 0;
         document.querySelectorAll('.item-row').forEach(row => {
@@ -51,6 +52,12 @@ let itemCount = 1;
             const price = parseInt(unformatNumber(priceStr)) || 0;
             total += qty * price;
         });
+        
+        // Add service fee
+        const serviceFeeInput = document.querySelector('#service_fee');
+        const serviceFee = parseInt(unformatNumber(serviceFeeInput.value)) || 0;
+        total += serviceFee;
+        
         return total;
     }
 
@@ -64,23 +71,27 @@ let itemCount = 1;
         const serialNumberInput = document.querySelector('#serial_number');
         const problemTextarea = document.querySelector('#problem');
         const notesTextarea = document.querySelector('#notes');
+        const serviceFeeInput = document.querySelector('#service_fee');
 
         const companyText = companyInput.value ? `- *${companyInput.value}*` : '';
         
         let itemsText = '';
+        let subtotalItems = 0;
         document.querySelectorAll('.item-row').forEach(row => {
             const name = row.querySelector('.item-name').value;
             const qty = row.querySelector('.item-qty').value;
             const priceStr = row.querySelector('.item-price').value;
             const price = parseInt(unformatNumber(priceStr)) || 0;
             const subtotal = parseInt(qty) * price;
+            subtotalItems += subtotal;
             itemsText += `- *${name}* *@ ${qty}* x Rp. *${formatNumber(price)}* = Rp. *${formatNumber(subtotal)}*\n`;
         });
 
+        const serviceFee = parseInt(unformatNumber(serviceFeeInput.value)) || 0;
         const total = calculateTotal();
         
         // Add notes section if there's content
-        const notesSection = notesTextarea.value ? `\n\n------ Catatan ------\n*${notesTextarea.value}*` : '';
+        const notesSection = notesTextarea.value ? `\n------ Catatan ------\n*${notesTextarea.value}*\n` : '';
 
         const textMessage = `Selamat ${periode()} Bpk/Ibu *${nameInput.value}* ${companyText}
 
@@ -93,9 +104,11 @@ Masalah: *${problemTextarea.value}*
 
 ------ Pergantian Item ------
 ${itemsText}
+Subtotal Item: *Rp. ${formatNumber(subtotalItems)}*
+Biaya Layanan: *Rp. ${formatNumber(serviceFee)}*
+
 ------ Total ------
 *Rp. ${formatNumber(total)}*${notesSection}
-
 Mohon konfirmasi terkait perangkat yang akan digantikan.
 terima kasih.
 
@@ -158,6 +171,9 @@ SACOM`;
 
     // Event listeners
     document.addEventListener('DOMContentLoaded', () => {
+        // Add visual feedback for required fields
+        addVisualFeedback();
+        
         // Add item button
         document.querySelector('#add_item').addEventListener('click', addItem);
         
@@ -171,19 +187,67 @@ SACOM`;
             }
         });
         
-        // WhatsApp button
+        // Copy button with validation
+        document.querySelector('#copy_btn').addEventListener('click', async () => {
+            const emptyFields = validateRequiredFields();
+            
+            if (emptyFields.length > 0) {
+                showValidationError(emptyFields);
+                return;
+            }
+            
+            const message = generateMessage();
+            const success = await copyToClipboard(message);
+            
+            if (success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: 'Pesan berhasil disalin ke clipboard',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: 'Gagal menyalin pesan ke clipboard',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#ef4444'
+                });
+            }
+        });
+        
+        // WhatsApp button with validation
         document.querySelector('#whatsapp_btn').addEventListener('click', () => {
+            const emptyFields = validateRequiredFields();
+            
+            if (emptyFields.length > 0) {
+                showValidationError(emptyFields);
+                return;
+            }
+            
             const phoneInput = document.querySelector('#customer_phone');
             const phone = formatPhoneNumber(phoneInput.value);
             const message = generateMessage();
             const encodedMessage = encodeURIComponent(message);
             const whatsappUrl = `https://wa.me/${phone}?text=${encodedMessage}`;
-            window.open(whatsappUrl, '_blank');
+            
+            // Show success message before redirect
+            Swal.fire({
+                icon: 'success',
+                title: 'Form Lengkap!',
+                text: 'Mengarahkan ke WhatsApp...',
+                timer: 1500,
+                showConfirmButton: false
+            }).then(() => {
+                window.open(whatsappUrl, '_blank');
+            });
         });
         
-        // Input change listeners - pastikan semua input dan textarea termasuk notes
+        // Input change listeners - pastikan semua input dan textarea termasuk service fee
         document.querySelectorAll('input, textarea').forEach(input => {
-            if (input.classList.contains('item-price')) {
+            if (input.classList.contains('item-price') || input.id === 'service_fee') {
                 input.addEventListener('input', (e) => {
                     handlePriceInput(e.target);
                     generateMessage();
@@ -202,3 +266,81 @@ SACOM`;
         // Generate initial message
         generateMessage();
     });
+
+    // Function to copy text to clipboard
+    const copyToClipboard = async (text) => {
+        try {
+            await navigator.clipboard.writeText(text);
+            return true;
+        } catch (err) {
+            // Fallback for older browsers
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            return true;
+        }
+    }
+
+    // Function to validate required fields
+    const validateRequiredFields = () => {
+        const requiredFields = [
+            { id: 'customer_name', label: 'Nama Pelanggan' },
+            { id: 'customer_phone', label: 'Nomor Handphone' },
+            { id: 'brand', label: 'Merk' },
+            { id: 'type_brand', label: 'Type' },
+            { id: 'serial_number', label: 'Serial Number' },
+            { id: 'problem', label: 'Masalah' },
+            { id: 'service_fee', label: 'Biaya Layanan' }
+        ];
+
+        const emptyFields = [];
+        
+        requiredFields.forEach(field => {
+            const element = document.querySelector(`#${field.id}`);
+            if (!element.value.trim()) {
+                emptyFields.push(field.label);
+            }
+        });
+
+        return emptyFields;
+    }
+
+    // Function to show validation error
+    const showValidationError = (emptyFields) => {
+        const fieldList = emptyFields.map(field => `${field}`).join('\n');
+        
+        Swal.fire({
+            icon: 'error',
+            title: 'Form Tidak Lengkap!',
+            text: `Mohon lengkapi field bertanda *`,
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#ef4444'
+        });
+    }
+
+    // Function to add visual feedback for required fields
+    const addVisualFeedback = () => {
+        const requiredInputs = document.querySelectorAll('input[required], textarea[required]');
+        
+        requiredInputs.forEach(input => {
+            input.addEventListener('blur', () => {
+                if (!input.value.trim()) {
+                    input.classList.add('border-red-500');
+                    input.classList.remove('border-gray-300');
+                } else {
+                    input.classList.remove('border-red-500');
+                    input.classList.add('border-gray-300');
+                }
+            });
+            
+            input.addEventListener('input', () => {
+                if (input.value.trim()) {
+                    input.classList.remove('border-red-500');
+                    input.classList.add('border-gray-300');
+                }
+            });
+        });
+    }
