@@ -36,6 +36,10 @@
 
         <div class="flex flex-col border p-4 w-xs lg:w-[700px] mb-5">
             <h1 class="font-bold text-2xl mb-5">Data Perangkat</h1>
+            <div class="w-full flex flex-col mb-2">
+                <label for="date_in">Tanggal Masuk</label>
+                <input class="border p-2" type="date" id="date_in" required autocomplete="off">
+            </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
                 <div class="flex flex-col">
@@ -55,9 +59,24 @@
                     <input class="border p-2" type="text" placeholder="SN1234567890" id="serial_number" required autocomplete="off">
                 </div>
             </div>
+            <div>
+                <div class="w-full">
+                <label for="completeness">Kelengkapan <span class="text-red-500">*</span></label>
+                <textarea name="completeness" id="completeness" cols="30" rows="10" class="border p-2 w-full lg:w-[600px] h-32" required></textarea>
+            </div>
             <div class="w-full">
                 <label for="problem">Masalah <span class="text-red-500">*</span></label>
                 <textarea name="problem" id="problem" cols="30" rows="10" class="border p-2 w-full lg:w-[600px] h-32"></textarea>
+            </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="flex flex-col border p-4 w-xs lg:w-[700px] mb-5">
+            <h1 class="font-bold text-2xl mb-5">Hasil Analisa</h1>
+            <div class="w-full flex flex-col">
+                <label for="analysis">Analisa <span class="text-red-500">*</span></label>
+                <textarea name="analysis" id="analysis" cols="30" rows="10" class="border p-2 w-full lg:w-[600px] h-32"></textarea>
             </div>
         </div>
         </div>
