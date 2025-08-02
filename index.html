@@ -8,6 +8,9 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <style>
+    .root {
+        --primary: oklch(0.828 0.111 230.318);
+    }
     .neo-shadow-sm {
         box-shadow: 2px 2px 0px 0px #000;
     }
@@ -18,10 +21,16 @@
     .neobrutalism-shadow:hover {
         box-shadow: 0px 0px 0px 0px #000;
     }
+    .bg-theme {
+        background-color: #e5e5f7;
+        opacity: 0.8;
+        background-size: 10px 10px;
+        background-image: repeating-linear-gradient(45deg, #ffb2ef 0, #ffb2ef 1px, #e5e5f7 0, #e5e5f7 50%);
+    }
 </style>
 <body>
-    <section class="flex flex-col items-center justify-center mx-auto min-h-screen pb-16">
-        <h1 class="font-bold text-3xl mb-10">FORM PENAWARAN</h1>
+    <section class="flex flex-col items-center justify-center mx-auto min-h-screen pb-16 bg-theme">
+        <h1 class="font-bold text-3xl mb-10 mt-16">FORM PENAWARAN</h1>
         <div class="flex flex-col border p-4 mb-5 w-xs lg:w-[700px] bg-amber-200 neobrutalism-shadow">
             <h1 class="font-bold text-2xl mb-5">Data Pelanggan</h1>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5 ">
