@@ -91,7 +91,7 @@ let itemCount = 1;
         const total = calculateTotal();
         
         // Add notes section if there's content
-        const notesSection = notesTextarea.value ? `\n------ Catatan ------\n*${notesTextarea.value}*\n` : '';
+        const notesSection = notesTextarea.value ? `\n\n------ Catatan ------\n*${notesTextarea.value}*` : '';
 
         const textMessage = `Selamat ${periode()} Bpk/Ibu *${nameInput.value}* ${companyText}
 
@@ -109,6 +109,7 @@ Biaya Layanan: *Rp. ${formatNumber(serviceFee)}*
 
 ------ Total ------
 *Rp. ${formatNumber(total)}*${notesSection}
+
 Mohon konfirmasi terkait perangkat yang akan digantikan.
 terima kasih.
 
