@@ -46,7 +46,7 @@ let itemCount = 1;
             const qty = row.querySelector('.item-qty').value;
             const price = row.querySelector('.item-price').value;
             const subtotal = parseInt(qty) * parseInt(price);
-            itemsText += `Nama Barang: *${name}* @ *${qty}* x Rp. *${parseInt(price).toLocaleString('id-ID')}* = Rp. *${subtotal.toLocaleString('id-ID')}*\n`;
+            itemsText += `- *${name}* @ *${qty}* x Rp. *${parseInt(price).toLocaleString('id-ID')}* = Rp. *${subtotal.toLocaleString('id-ID')}*\n`;
         });
 
         const total = calculateTotal();
@@ -63,7 +63,7 @@ Masalah: *${problemTextarea.value}*
 ------ Pergantian Item ------
 ${itemsText}
 ------ Total ------
-Total: *Rp. ${total.toLocaleString('id-ID')}*
+*Rp. ${total.toLocaleString('id-ID')}*
 
 Mohon konfirmasi terkait perangkat yang akan digantikan.
 terima kasih.
