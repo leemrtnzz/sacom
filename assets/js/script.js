@@ -11,10 +11,35 @@ let itemCount = 1;
 
     // Function to format phone number
     const formatPhoneNumber = (phone) => {
-        if (phone.startsWith('08')) {
+        if (phone.startsWith('08') || phone.startsWith('628')) {
             return '62' + phone.substring(1);
         }
         return phone;
+    }
+
+    // Function to format number with thousand separator
+    const formatNumber = (num) => {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+
+    // Function to remove formatting from number
+    const unformatNumber = (str) => {
+        return str.replace(/\./g, '');
+    }
+
+    // Function to handle price input formatting
+    const handlePriceInput = (input) => {
+        let value = input.value;
+        // Remove all dots first
+        value = unformatNumber(value);
+        // Only allow numbers
+        value = value.replace(/[^0-9]/g, '');
+        // Format with dots
+        if (value) {
+            input.value = formatNumber(value);
+        } else {
+            input.value = '';
+        }
     }
 
     // Function to calculate total
@@ -22,7 +47,8 @@ let itemCount = 1;
         let total = 0;
         document.querySelectorAll('.item-row').forEach(row => {
             const qty = parseInt(row.querySelector('.item-qty').value) || 0;
-            const price = parseInt(row.querySelector('.item-price').value) || 0;
+            const priceStr = row.querySelector('.item-price').value;
+            const price = parseInt(unformatNumber(priceStr)) || 0;
             total += qty * price;
         });
         return total;
@@ -44,9 +70,10 @@ let itemCount = 1;
         document.querySelectorAll('.item-row').forEach(row => {
             const name = row.querySelector('.item-name').value;
             const qty = row.querySelector('.item-qty').value;
-            const price = row.querySelector('.item-price').value;
-            const subtotal = parseInt(qty) * parseInt(price);
-            itemsText += `- *${name}* @ *${qty}* x Rp. *${parseInt(price).toLocaleString('id-ID')}* = Rp. *${subtotal.toLocaleString('id-ID')}*\n`;
+            const priceStr = row.querySelector('.item-price').value;
+            const price = parseInt(unformatNumber(priceStr)) || 0;
+            const subtotal = parseInt(qty) * price;
+            itemsText += `- *${name}* *@ ${qty}* x Rp. *${formatNumber(price)}* = Rp. *${formatNumber(subtotal)}*\n`;
         });
 
         const total = calculateTotal();
@@ -63,7 +90,7 @@ Masalah: *${problemTextarea.value}*
 ------ Pergantian Item ------
 ${itemsText}
 ------ Total ------
-*Rp. ${total.toLocaleString('id-ID')}*
+*Rp. ${formatNumber(total)}*
 
 Mohon konfirmasi terkait perangkat yang akan digantikan.
 terima kasih.
@@ -91,7 +118,7 @@ SACOM`;
             </div>
             <div class="flex flex-col">
                 <label>Harga</label>
-                <input class="border p-2 item-price" type="number" placeholder="price" value="1" required autocomplete="off">
+                <input class="border p-2 item-price" type="text" placeholder="1.000" value="1" required autocomplete="off">
             </div>
             <div class="flex flex-col">
                 <label class="invisible">Action</label>
@@ -106,7 +133,14 @@ SACOM`;
         
         // Add event listeners to new inputs
         newRow.querySelectorAll('input').forEach(input => {
-            input.addEventListener('input', generateMessage);
+            if (input.classList.contains('item-price')) {
+                input.addEventListener('input', (e) => {
+                    handlePriceInput(e.target);
+                    generateMessage();
+                });
+            } else {
+                input.addEventListener('input', generateMessage);
+            }
         });
         
         // Add event listener to remove button
@@ -145,7 +179,14 @@ SACOM`;
         
         // Input change listeners
         document.querySelectorAll('input, textarea').forEach(input => {
-            input.addEventListener('input', generateMessage);
+            if (input.classList.contains('item-price')) {
+                input.addEventListener('input', (e) => {
+                    handlePriceInput(e.target);
+                    generateMessage();
+                });
+            } else {
+                input.addEventListener('input', generateMessage);
+            }
         });
         
         // Generate initial message
