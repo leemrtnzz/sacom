@@ -80,7 +80,7 @@ let itemCount = 1;
         const total = calculateTotal();
         
         // Add notes section if there's content
-        const notesSection = notesTextarea.value ? `\n------ Catatan ------\n*${notesTextarea.value}*\n` : '';
+        const notesSection = notesTextarea.value ? `\n\n------ Catatan ------\n*${notesTextarea.value}*` : '';
 
         const textMessage = `Selamat ${periode()} Bpk/Ibu *${nameInput.value}* ${companyText}
 
@@ -181,7 +181,7 @@ SACOM`;
             window.open(whatsappUrl, '_blank');
         });
         
-        // Input change listeners
+        // Input change listeners - pastikan semua input dan textarea termasuk notes
         document.querySelectorAll('input, textarea').forEach(input => {
             if (input.classList.contains('item-price')) {
                 input.addEventListener('input', (e) => {
@@ -192,6 +192,12 @@ SACOM`;
                 input.addEventListener('input', generateMessage);
             }
         });
+        
+        // Khusus untuk textarea notes, pastikan event listener terpasang
+        const notesTextarea = document.querySelector('#notes');
+        if (notesTextarea) {
+            notesTextarea.addEventListener('input', generateMessage);
+        }
         
         // Generate initial message
         generateMessage();
