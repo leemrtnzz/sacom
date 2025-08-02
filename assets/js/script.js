@@ -86,21 +86,29 @@ let itemCount = 1;
             subtotalItems += subtotal;
             itemsText += `- *${name}* *@ ${qty}* x Rp. *${formatNumber(price)}* = Rp. *${formatNumber(subtotal)}*\n`;
         });
-
+        const date = document.getElementById("date_in").value;
+        const analysis = document.getElementById("analysis").value;
+        const completeness = document.getElementById("completeness").value;
         const serviceFee = parseInt(unformatNumber(serviceFeeInput.value)) || 0;
         const total = calculateTotal();
         
         // Add notes section if there's content
         const notesSection = notesTextarea.value ? `\n\n------ Catatan ------\n*${notesTextarea.value}*` : '';
 
-        const textMessage = `Selamat ${periode()} Bpk/Ibu *${nameInput.value}* ${companyText}
-
-Kami ingin memberitahukan terkait perangkat yang akan digantikan.
+        const textMessage = `Assalaamua'laikum Wr. Wb.
+Selamat ${periode()} Bapak/Ibu *${nameInput.value}* ${companyText}
+Saya Dari SA Com (Spesialis Service Printer & Projector)
+mau info status perbaikan Unit sbb:
 
 ------ Detail Perangkat ------
+Tanggal Masuk: *${date}*
 Merk: *${brandInput.value}* - *${typeBrandInput.value}*
 Serial Number: *${serialNumberInput.value}*
-Masalah: *${problemTextarea.value}*
+Kelengkapan: *${completeness}*
+Masalah saat diterima: *${problemTextarea.value}*
+
+------ Analisa Kerusakan ------
+*${analysis}*
 
 ------ Pergantian Item ------
 ${itemsText}
@@ -110,10 +118,21 @@ Biaya Layanan: *Rp. ${formatNumber(serviceFee)}*
 ------ Total ------
 *Rp. ${formatNumber(total)}*${notesSection}
 
-Mohon konfirmasi terkait perangkat yang akan digantikan.
+Demikian info dari kami, Mohon konfirmasi terkait perangkat yang akan digantikan.
 terima kasih.
 
-SACOM`;
+Note : 
+-Kami memberikan garansi service selama 14 hari, dengan kendala yang sama.
+-Untuk harga service di atas Rp, 500,000 wajib melakukan pembayaran DP 50%.
+pembayaran dapat di transfer ke :
+Nama bank   : BCA 
+Cabang         : KCP Serang
+No Rekening : 2452490863 
+A.N                : SOLAHUDIN 
+Mohon konfirmasi jika sudah melakukan pembayaran.
+
+
+-SACOM-`;
 
         document.querySelector('#text_message').value = textMessage;
         return textMessage;
