@@ -63,6 +63,7 @@ let itemCount = 1;
         const typeBrandInput = document.querySelector('#type_brand');
         const serialNumberInput = document.querySelector('#serial_number');
         const problemTextarea = document.querySelector('#problem');
+        const notesTextarea = document.querySelector('#notes');
 
         const companyText = companyInput.value ? `- *${companyInput.value}*` : '';
         
@@ -77,6 +78,9 @@ let itemCount = 1;
         });
 
         const total = calculateTotal();
+        
+        // Add notes section if there's content
+        const notesSection = notesTextarea.value ? `\n------ Catatan ------\n*${notesTextarea.value}*\n` : '';
 
         const textMessage = `Selamat ${periode()} Bpk/Ibu *${nameInput.value}* ${companyText}
 
@@ -90,7 +94,7 @@ Masalah: *${problemTextarea.value}*
 ------ Pergantian Item ------
 ${itemsText}
 ------ Total ------
-*Rp. ${formatNumber(total)}*
+*Rp. ${formatNumber(total)}*${notesSection}
 
 Mohon konfirmasi terkait perangkat yang akan digantikan.
 terima kasih.
