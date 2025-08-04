@@ -86,7 +86,21 @@ let itemCount = 1;
             subtotalItems += subtotal;
             itemsText += `- *${name}* *@ ${qty}* x Rp. *${formatNumber(price)}* = Rp. *${formatNumber(subtotal)}*\n`;
         });
-        const date = document.getElementById("date_in").value;
+        const dateInput = document.getElementById("date_in").value;
+const date = new Date(dateInput);
+
+// Opsi untuk format tanggal Indonesia
+const options = { 
+  day: '2-digit', 
+  month: 'long', 
+  year: 'numeric' 
+};
+
+// Format tanggal ke bahasa Indonesia (hasil: "09 Agustus 2025")
+let tanggalFormatted = date.toLocaleDateString('id-ID', options);
+
+// Ganti spasi dengan tanda "-" untuk hasil "09-Agustus-2025"
+tanggalFormatted = tanggalFormatted.replace(/ /g, '-');
         const analysis = document.getElementById("analysis").value;
         const completeness = document.getElementById("completeness").value;
         const serviceFee = parseInt(unformatNumber(serviceFeeInput.value)) || 0;
@@ -101,7 +115,7 @@ Saya Dari SA Com (Spesialis Service Printer & Projector)
 mau info status perbaikan Unit sbb:
 
 ------ Detail Perangkat ------
-Tanggal Masuk: *${date}*
+Tanggal Masuk: *${tanggalFormatted}*
 Merk: *${brandInput.value}* - *${typeBrandInput.value}*
 Serial Number: *${serialNumberInput.value}*
 Kelengkapan: *${completeness}*
@@ -115,7 +129,7 @@ ${itemsText}
 Subtotal Item: *Rp. ${formatNumber(subtotalItems)}*
 Biaya Layanan: *Rp. ${formatNumber(serviceFee)}*
 
------- Total ------
+------ Grand Total ------
 *Rp. ${formatNumber(total)}*${notesSection}
 
 Demikian info dari kami, Mohon konfirmasi terkait perangkat yang akan digantikan.
