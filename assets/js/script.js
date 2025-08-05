@@ -84,7 +84,7 @@ let itemCount = 1;
             const price = parseInt(unformatNumber(priceStr)) || 0;
             const subtotal = parseInt(qty) * price;
             subtotalItems += subtotal;
-            itemsText += `- *${name}* *@ ${qty}* x Rp. *${formatNumber(price)}* = Rp. *${formatNumber(subtotal)}*\n`;
+            itemsText += `- *${name}* *@${qty}* x Rp. *${formatNumber(price)}* = Rp. *${formatNumber(subtotal)}*\n`;
         });
         const dateInput = document.getElementById("date_in").value;
 const date = new Date(dateInput);
